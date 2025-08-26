@@ -95,26 +95,6 @@ const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
           // Los estilos se aplican ahora en la td, solo retornamos el contenido sin padding
           return cellValue;
         }
-        // Estilos para fine-tuning
-        else if (header.toLowerCase() === 'ft') {
-          if (cellValue.toLowerCase() === 'yes') {
-            return (
-              <div className="text-sm flex items-center break-words">
-                <Check className="h-4 w-4 text-green-600 mr-1" />
-                {/* <span className="text-green-600 font-medium">Yes</span> */}
-              </div>
-            );
-          } else if (cellValue.toLowerCase() === 'no') {
-            return (
-              <div className="text-sm flex items-center break-words">
-                <X className="h-4 w-4 text-red-600 mr-1" />
-                {/* <span className="text-red-600 font-medium">No</span> */}
-              </div>
-            );
-          } else {
-            cellClass += ' text-gray-900';
-          }
-        }
         // Estilos para work
         else if (header.toLowerCase() === 'work' || header.toLowerCase() === 'dataset') {
           // I want to add Paper with the link the content of work
