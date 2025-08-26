@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Note: src/data/benchmark_linguistics.json is intentionally included
+# as it's the static data source imported by the application

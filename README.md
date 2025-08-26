@@ -4,9 +4,14 @@ A Next.js web application for visualizing and analyzing psycholinguistics benchm
 
 ## 🚀 Features
 
-- **Automatic data loading**: Automatically reads Excel file from repository
+- **Static JSON imports**: Data imported at build time for instant loading
+- **High performance**: Zero runtime data fetching
 - **Interactive table**: Filtering, sorting, and pagination
 - **Responsive**: Works on mobile devices and desktop
+- **Static export**: Optimized for GitHub Pages deployment
+- **Automatic conversion**: Excel automatically converts to JSON on development
+
+
 
 
 ## 🛠️ Installation and Development
@@ -44,6 +49,9 @@ npm run build
 # Export static files
 npm run export
 
+# Convert Excel to JSON (for data updates)
+npm run convert-excel
+
 # Linting
 npm run lint
 ```
@@ -54,8 +62,9 @@ npm run lint
 
 To update benchmark data:
 
-1. **Edit XLSX**: Modify `public/benchmark_data.xlsx` with new data
-2. **Deploy**: Changes will be automatically visible when reloading the application
+1. **Edit XLSX**: Modify `public/benchmark_linguistics.xlsx` with new data
+2. **Convert to JSON**: Run `npm run convert-excel` to generate the JSON file
+3. **Deploy**: Push changes to update the live application
 
 
 

@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/excel-to-json.js",
     "dev": "next dev --turbopack",
+    "prebuild": "node scripts/excel-to-json.js",
     "build": "next build",
-    "lint": "next lint",
-    "generate-excel": "node scripts/create-excel.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
     "lucide-react": "^0.539.0",
     "next": "15.4.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "xlsx": "^0.18.5"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -25,6 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "xlsx": "^0.18.5"
   }
 }

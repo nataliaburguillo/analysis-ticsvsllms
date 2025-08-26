@@ -253,10 +253,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
         </div>
       </div>
 
-      {/* Información de filas */}
-      <div className="mb-4 text-sm text-gray-600">
+      {/* <div className="mb-4 text-sm text-gray-600">
         Rows: {table.getFilteredRowModel().rows.length}
-      </div>
+      </div> */}
 
       {/* Tabla */}
       <div className="border border-gray-200 rounded-lg overflow-hidden">
