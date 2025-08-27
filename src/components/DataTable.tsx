@@ -142,7 +142,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
           </div>
         );
       },
-      enableSorting: header.toLowerCase() !== 'ft', // Deshabilitar sorting para FT
+      enableSorting: header.toLowerCase() !== 'none', // Unable sorting for 'none'
       enableColumnFilter: true,
       // Función para obtener el tooltip de cada columna
       meta: {
@@ -168,6 +168,8 @@ const DataTable: React.FC<DataTableProps> = ({ data, headers }) => {
               return 'Sample size used in the evaluation';
             case 'metric':
               return 'Metric used to measure model performance';
+            case 'method':
+              return 'Method used for prompting';
             default:
               return `No information available`;
           }

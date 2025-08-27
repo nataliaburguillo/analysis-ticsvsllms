@@ -2,6 +2,7 @@
   "headers": [
     "Model",
     "FT",
+    "Method",
     "Task",
     "Language",
     "Dataset",
@@ -14,6 +15,7 @@
     {
       "Model": "gpt-4o-mini-2024-07-18",
       "FT": "No",
+      "Method": "Direct prompt",
       "Task": "Age-of-Acquisition",
       "Language": "Spanish",
       "Dataset": "Alonso et al. (2015)",
@@ -25,6 +27,7 @@
     {
       "Model": "gpt-4o-mini-2024-07-18-fine-tuned",
       "FT": "Yes",
+      "Method": "FT; Direct prompt",
       "Task": "Age-of-Acquisition",
       "Language": "Spanish",
       "Dataset": "Alonso et al. (2015)",
@@ -36,6 +39,7 @@
     {
       "Model": "example",
       "FT": "Yes",
+      "Method": "FT; Direct prompt",
       "Task": "Example",
       "Language": "Example",
       "Dataset": "Example Work (Year) [url]; Other Work (Year)",
@@ -43,12 +47,24 @@
       "ρ": 0.1,
       "r": 1,
       "Work": "Example Work (Year) [url]; Other Work (Year) [url]"
+    },
+    {
+      "Model": "example2",
+      "FT": "No",
+      "Method": "3-shot",
+      "Task": "Example",
+      "Language": "Example",
+      "Dataset": "Example Work (Year) [url]; Other Work (Year)",
+      "Words": 50,
+      "ρ": 0.5,
+      "r": 0.8,
+      "Work": "Example Work (Year) [url]; Other Work (Year) [url]"
     }
   ],
   "metadata": {
-    "totalRows": 3,
-    "totalColumns": 9,
-    "generatedAt": "2025-08-26T18:40:51.195Z",
+    "totalRows": 4,
+    "totalColumns": 10,
+    "generatedAt": "2025-08-27T12:32:07.913Z",
     "source": "benchmark_linguistics.xlsx"
   }
 }
