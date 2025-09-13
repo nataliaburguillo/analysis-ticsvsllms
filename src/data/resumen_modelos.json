@@ -1,0 +1,81 @@
+{
+  "headers": [
+    "Model",
+    "FT",
+    "Method",
+    "Questions",
+    "% Correct answers",
+    "% Corrected Score",
+    "No doubt",
+    "Logprobs"
+  ],
+  "data": [
+    {
+      "Model": "gemma2-9b-it",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 68.77,
+      "% Corrected Score": 58.37,
+      "No doubt": "No",
+      "Logprobs": "No"
+    },
+    {
+      "Model": "gpt-4.1-mini",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 83.84,
+      "% Corrected Score": 78.46,
+      "No doubt": "No",
+      "Logprobs": "No"
+    },
+    {
+      "Model": "gpt-4.1-mini",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 83.64,
+      "% Corrected Score": 78.19,
+      "No doubt": "No",
+      "Logprobs": "Sí"
+    },
+    {
+      "Model": "gpt-4.1-mini",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 83.79,
+      "% Corrected Score": 78.49,
+      "No doubt": "Sí",
+      "Logprobs": "Sí"
+    },
+    {
+      "Model": "mistral-saba-24b",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 74.14,
+      "% Corrected Score": 65.53,
+      "No doubt": "No",
+      "Logprobs": "No"
+    },
+    {
+      "Model": "o4-mini",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 1645,
+      "% Correct answers": 39.82,
+      "% Corrected Score": 20.47,
+      "No doubt": "Sí",
+      "Logprobs": "No"
+    }
+  ],
+  "metadata": {
+    "totalRows": 6,
+    "totalColumns": 8,
+    "generatedAt": "2025-09-13T18:48:29.816Z",
+    "source": "public/resumen_modelos.xlsx",
+    "sheet": "Resumen"
+  }
+}
