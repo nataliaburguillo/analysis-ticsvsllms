@@ -11,9 +11,6 @@ A Next.js web application for visualizing and analyzing psycholinguistics benchm
 - **Static export**: Optimized for GitHub Pages deployment
 - **Automatic conversion**: Excel automatically converts to JSON on development
 
-
-
-
 ## 🛠️ Installation and Development
 
 ### Prerequisites
@@ -25,8 +22,8 @@ A Next.js web application for visualizing and analyzing psycholinguistics benchm
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/psycholinguistics_benchmark.git
-cd psycholinguistics_benchmark
+git clone https://github.com/your-username/analysis-ticsvsllms.git
+cd analysis-ticsvsllms
 
 # Install dependencies
 npm install
@@ -56,8 +53,6 @@ npm run convert-excel
 npm run lint
 ```
 
-
-
 ## 🔄 Update Data
 
 To update benchmark data:
@@ -65,8 +60,6 @@ To update benchmark data:
 1. **Edit XLSX**: Modify `public/benchmark_linguistics.xlsx` with new data
 2. **Convert to JSON**: Run `npm run convert-excel` to generate the JSON file
 3. **Deploy**: Push changes to update the live application
-
-
 
 ## 🚀 Deploy to GitHub Pages
 
@@ -89,8 +82,6 @@ npm run build
 # Upload these files to your preferred hosting
 ```
 
-
 ## 📜 License
 
 This project is under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
