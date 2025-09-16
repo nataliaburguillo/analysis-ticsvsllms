@@ -200,7 +200,7 @@ const DataTable: React.FC<DataTableProps> = ({
           const n = Number(info.getValue() ?? 0);
           return (
             <span className="text-sm tabular-nums text-black">
-              {Number.isFinite(n) ? n.toLocaleString() : "-"}
+              {Number.isFinite(n) ? n.toLocaleString("en-US") : "-"}
             </span>
           );
         },
