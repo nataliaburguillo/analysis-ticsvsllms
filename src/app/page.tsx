@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import DataTable from "@/components/DataTable";
+import ChaptersTable from "@/components/ChaptersTable";
 import ModelDataTable from "@/components/ModelDataTable";
 import { FileSpreadsheet, ArrowLeft } from "lucide-react";
 import benchmarkData from "@/data/resumen_modelos.json";
@@ -18,9 +19,19 @@ type DataRow = {
   [key: string]: string | number | boolean | null | undefined;
 };
 
+const MODEL_OPTIONS = [
+  { key: "gemma", label: "Gemma 2-9b-it" },
+  { key: "gpt4", label: "GPT-4.1-mini" },
+  { key: "mistral", label: "Mistral Saba-24b" },
+];
+
 export default function Home() {
   const { data, headers } = benchmarkData;
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [showTopics, setShowTopics] = useState(false);
+  const [selectedModelForTopics, setSelectedModelForTopics] = useState<
+    "gemma" | "gpt4" | "mistral"
+  >("gemma");
 
   // Mapeo de modelos a sus datos correspondientes
   type ModelData = {
@@ -69,6 +80,7 @@ export default function Home() {
 
   const handleBackClick = () => {
     setSelectedModel(null);
+    setShowTopics(false);
   };
 
   const getModelData = (modelName: string) => {
@@ -93,7 +105,7 @@ export default function Home() {
 
       <div className="relative">
         <div className="max-w-6xl mx-auto px-6 py-12">
-          {/* Header minimalista */}
+          {/* Header */}
           <motion.header
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -116,27 +128,36 @@ export default function Home() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-semibold text-slate-900">
-                    {selectedModel
+                    {showTopics
+                      ? "Accuracy por temas"
+                      : selectedModel
                       ? `Detalles: ${selectedModel}`
                       : "TIC-QA Benchmark"}
                   </h1>
                   <p className="text-sm text-slate-500">
-                    {selectedModel
+                    {showTopics
+                      ? "Porcentaje de acierto por tema y modelo"
+                      : selectedModel
                       ? "Respuestas detalladas del modelo"
                       : "Evaluación de LLMs en preguntas TIC"}
                   </p>
                 </div>
               </div>
-
               <div className="flex items-center gap-4 text-sm">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-lg">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="text-emerald-700 font-medium">
-                    {selectedModel
-                      ? getModelData(selectedModel).data?.length || 0
-                      : data.length}
-                  </span>
-                </div>
+                {!selectedModel && (
+                  <>
+                    <button
+                      className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors ${
+                        showTopics
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 hover:bg-blue-100 text-blue-700"
+                      }`}
+                      onClick={() => setShowTopics((prev) => !prev)}
+                    >
+                      Por temas
+                    </button>
+                  </>
+                )}
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-lg">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
                   <span className="text-blue-700 font-medium">
@@ -151,7 +172,7 @@ export default function Home() {
 
           {/* Sección principal - Tabla elegante */}
           <motion.section
-            key={selectedModel || "summary"} // Key para forzar re-render
+            key={selectedModel || (showTopics ? "topics" : "summary")}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -159,7 +180,9 @@ export default function Home() {
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 overflow-hidden">
               {/* Contenido de la tabla */}
               <div className="p-8">
-                {selectedModel ? (
+                {showTopics ? (
+                  <ChaptersTable selectedModel={selectedModelForTopics} />
+                ) : selectedModel ? (
                   <ModelDataTable
                     data={(getModelData(selectedModel).data as DataRow[]) || []}
                     headers={getModelData(selectedModel).headers || []}

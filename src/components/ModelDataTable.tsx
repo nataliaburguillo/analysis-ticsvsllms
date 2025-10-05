@@ -212,11 +212,9 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
             cellValue === "verdadero" ||
             cellValue === "true" ||
             cellValue === "1";
-          const isIncorrect = 
-            cellValue === "falso" ||
-            cellValue === "false" ||
-            cellValue === "0";
-          
+          const isIncorrect =
+            cellValue === "falso" || cellValue === "false" || cellValue === "0";
+
           return (
             <span
               className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
@@ -227,7 +225,11 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
                   : "bg-gray-50 text-gray-500 ring-1 ring-inset ring-gray-200"
               }`}
             >
-              {isCorrect ? "✓ Correcto" : isIncorrect ? "✗ Incorrecto" : "— En blanco"}
+              {isCorrect
+                ? "✓ Correcto"
+                : isIncorrect
+                ? "✗ Incorrecto"
+                : "— En blanco"}
             </span>
           );
         },
@@ -281,7 +283,7 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
-      pagination: { pageSize: 20 },
+      pagination: { pageSize: 100 },
     },
   });
 

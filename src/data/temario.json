@@ -1,0 +1,815 @@
+{
+  "headers": [
+    "Bloque",
+    "Título Bloque",
+    "Tema",
+    "Título Tema"
+  ],
+  "data": [
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "1",
+      "Título Tema": "Constitución Española (I)."
+    },
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "2",
+      "Título Tema": "Constitución Española (II). Poder Judicial"
+    },
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "3",
+      "Título Tema": "Constitución Española (III). Organización Territorial"
+    },
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "4",
+      "Título Tema": "Constitución Española (IV). Administración"
+    },
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "5",
+      "Título Tema": "Unión Europea"
+    },
+    {
+      "Bloque": "A1",
+      "Título Bloque": "I. Marco Constitucional Español y Unión Europea",
+      "Tema": "6",
+      "Título Tema": "Organización territorial de la AGE."
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "7",
+      "Título Tema": "Fuentes del Derecho Administrativo"
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "8",
+      "Título Tema": "Régimen jurídico de las AAPP. Procedimiento administrativo."
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "9",
+      "Título Tema": "Revisión de los actos en vía administrativa. Recursos"
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "10",
+      "Título Tema": "La responsabilidad patrimonial de las Administraciones Públicas."
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "11",
+      "Título Tema": "Los contratos de las Administraciones Públicas."
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "12",
+      "Título Tema": "Los presupuestos generales del Estado."
+    },
+    {
+      "Bloque": "A2",
+      "Título Bloque": "II. Actuación Administrativa y Gestión Financiera.",
+      "Tema": "13",
+      "Título Tema": "Convenios. Encomiendas de gestión. Colaboración público-privada"
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "14",
+      "Título Tema": "El modelo económico español."
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "15",
+      "Título Tema": "Los sectores de la economía."
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "16",
+      "Título Tema": "Estructura social y políticas de igualdad."
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "17",
+      "Título Tema": "El mercado de trabajo."
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "18",
+      "Título Tema": "TIC y sociedad."
+    },
+    {
+      "Bloque": "A3",
+      "Título Bloque": "III. Estructura Social y Económica de España",
+      "Tema": "19",
+      "Título Tema": "TIC, economía y mercado de trabajo."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "20",
+      "Título Tema": "La función gerencial de las AAPP."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "21",
+      "Título Tema": "Gestión de equipos."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "22",
+      "Título Tema": "La calidad en los servicios públicos."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "23",
+      "Título Tema": "Modelo burocrático, management y gobernanza."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "24",
+      "Título Tema": "Empleo Público"
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "25",
+      "Título Tema": "Gobernanza, Gobierno Abierto y Transparencia "
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "26",
+      "Título Tema": "Emprendimiento y unidad de mercado."
+    },
+    {
+      "Bloque": "A4",
+      "Título Bloque": "IV. Dirección Pública",
+      "Tema": "27",
+      "Título Tema": "Protección de Datos"
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "28",
+      "Título Tema": "Conceptos de sistemas de información."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "29",
+      "Título Tema": "La información en las organizaciones."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "30",
+      "Título Tema": "Gobernanza TIC."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "31",
+      "Título Tema": "Reutilización de la información del sector público."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "32",
+      "Título Tema": "Directivo TIC."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "33",
+      "Título Tema": "Herramientas para el directivo TIC."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "34",
+      "Título Tema": "Centro de sistemas de información."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "35",
+      "Título Tema": "Dirección y gestión de proyectos TIC."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "36",
+      "Título Tema": "Metodologías predictivas para la gestión de proyectos."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "37",
+      "Título Tema": "Metodologías lean."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "38",
+      "Título Tema": "Auditoría informática."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "39",
+      "Título Tema": "Ley de contratos."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "40",
+      "Título Tema": "Adquisición de sistemas."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "41",
+      "Título Tema": "Alternativas de decisión."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "42",
+      "Título Tema": "Rentabilidad de las inversiones."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "43",
+      "Título Tema": "Protección jurídica del software."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "44",
+      "Título Tema": "Accesibilidad y usabilidad."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "45",
+      "Título Tema": "ENI"
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "46",
+      "Título Tema": "NTI"
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "47",
+      "Título Tema": "Análisis y gestión de riesgos."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "48",
+      "Título Tema": "ENS."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "49",
+      "Título Tema": "Infraestructuras y servicios comunes."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "50",
+      "Título Tema": "Organizaciónes de normalización."
+    },
+    {
+      "Bloque": "B1",
+      "Título Bloque": "I. Organización y Gestión de los Sistemas de Información",
+      "Tema": "51",
+      "Título Tema": "Agenda Digital para España. Mercado Único Digital"
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "52",
+      "Título Tema": "Sistemas de altas prestaciones."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "53",
+      "Título Tema": "Equipos departamentales y servidores."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "54",
+      "Título Tema": "Dispositivos personales y móviles."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "55",
+      "Título Tema": "Cloud computing."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "56",
+      "Título Tema": "Sistemas de almacenamiento."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "57",
+      "Título Tema": "Sistemas de información multiusuario."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "58",
+      "Título Tema": "Arquitectura SOA."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "59",
+      "Título Tema": "Sistemas Operativos."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "60",
+      "Título Tema": "UNIX-LINUX."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "61",
+      "Título Tema": "Microsoft."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "62",
+      "Título Tema": "Sistemas Operativos para móviles."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "63",
+      "Título Tema": "Sistemas de gestión de bases de datos."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "64",
+      "Título Tema": "El modelo relacional."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "65",
+      "Título Tema": "Arquitectura de desarrollo en la web."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "66",
+      "Título Tema": "Entorno de desarrollo Microsoft.NET."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "67",
+      "Título Tema": "Entorno de desarrollo JAVA."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "68",
+      "Título Tema": "Entorno de desarrollo PHP."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "69",
+      "Título Tema": "Software de código abierto y libre."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "70",
+      "Título Tema": "Inteligencia artificial."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "71",
+      "Título Tema": "Big Data."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "72",
+      "Título Tema": "Sistemas CRM y ERP."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "73",
+      "Título Tema": "E-learning."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "74",
+      "Título Tema": "Los sistemas GIS."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "75",
+      "Título Tema": "Datawarehouse y minería de datos."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "76",
+      "Título Tema": "Estrategia del dato."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "77",
+      "Título Tema": "Lenguajes de marcado."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "78",
+      "Título Tema": "Comercio electrónico."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "79",
+      "Título Tema": "El cifrado."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "80",
+      "Título Tema": "Identificación y firma electrónica I."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "81",
+      "Título Tema": "Identificación y firma electrónica II."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "82",
+      "Título Tema": "Adaptación LOPD."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "83",
+      "Título Tema": "El tratamiento de imágenes."
+    },
+    {
+      "Bloque": "B2",
+      "Título Bloque": "II. Tecnología Básica",
+      "Tema": "84",
+      "Título Tema": "Reconocimiento óptico de caracteres."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "85",
+      "Título Tema": "Blockchain."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "86",
+      "Título Tema": "Modelos de ciclo de vida."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "87",
+      "Título Tema": "Plan de sistemas de información."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "88",
+      "Título Tema": "Análisis de sistemas y metodologías ágiles."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "89",
+      "Título Tema": "Análisis del dominio de los sistemas."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "90",
+      "Título Tema": "Análisis dinámico de sistemas."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "91",
+      "Título Tema": "Análisis de aspectos no funcionales."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "92",
+      "Título Tema": "Diseño arquitectónico de sistemas."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "93",
+      "Título Tema": "Técnicas de diseño de software."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "94",
+      "Título Tema": "Prototipos en el desarrollo de sistemas."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "95",
+      "Título Tema": "Metrica"
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "96",
+      "Título Tema": "Pruebas de software."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "97",
+      "Título Tema": "Integración Continua."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "98",
+      "Título Tema": "Evaluación de la calidad del software."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "99",
+      "Título Tema": "Estimación de recursos."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "100",
+      "Título Tema": "Migración de aplicaciones y ajuste dimensional."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "101",
+      "Título Tema": "Mantenimiento de sistemas."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "102",
+      "Título Tema": "Gestión de cambios"
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "103",
+      "Título Tema": "Calidad de los servicios."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "104",
+      "Título Tema": "Gestión documental."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "105",
+      "Título Tema": "Sistemas de recuperación de la información."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "106",
+      "Título Tema": "ITIL y COBIT."
+    },
+    {
+      "Bloque": "B3",
+      "Título Bloque": "III. Ingeniería de los Sistemas de Información",
+      "Tema": "107",
+      "Título Tema": "Tecnologías emergentes."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "108",
+      "Título Tema": "Redes de telecomunicaciones."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "109",
+      "Título Tema": "Internet."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "110",
+      "Título Tema": "Cableado."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "111",
+      "Título Tema": "Modelo OSI."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "112",
+      "Título Tema": "Tecnologías de acceso."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "113",
+      "Título Tema": "Redes de transporte."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "114",
+      "Título Tema": "Redes inalámbricas."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "115",
+      "Título Tema": "Redes IP."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "116",
+      "Título Tema": "Redes de nueva generación."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "117",
+      "Título Tema": "Transformación digital."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "118",
+      "Título Tema": "Redes de área local."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "119",
+      "Título Tema": "Intranet y extranet."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "120",
+      "Título Tema": "Redes públicas."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "121",
+      "Título Tema": "CATV."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "122",
+      "Título Tema": "Correo electrónico."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "123",
+      "Título Tema": "Comunicaciones móviles."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "124",
+      "Título Tema": "Aplicaciones móviles."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "125",
+      "Título Tema": "Seguridad en redes."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "126",
+      "Título Tema": "Seguridad en el nivel de aplicación."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "127",
+      "Título Tema": "Ciberseguridad."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "128",
+      "Título Tema": "Continuidad del Negocio."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "129",
+      "Título Tema": "Regulación de las telecomunicaciones."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "130",
+      "Título Tema": "Videoconferencia."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "131",
+      "Título Tema": "Single sign-on."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "132",
+      "Título Tema": "Virtualización de sistemas."
+    },
+    {
+      "Bloque": "B4",
+      "Título Bloque": "IV. Redes, Comunicaciones e Internet",
+      "Tema": "133",
+      "Título Tema": "Trabajo colaborativo y redes sociales."
+    }
+  ],
+  "metadata": {
+    "totalRows": 133,
+    "totalColumns": 4,
+    "generatedAt": "2025-10-05T12:44:15.080Z",
+    "source": "public/temario.xlsx",
+    "sheet": "Sheet1"
+  }
+}
