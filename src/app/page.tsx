@@ -15,15 +15,7 @@ import mistral from "@/data/respuestas_mistral-saba-24b_evaluacion.json";
 import gemma from "@/data/respuestas_gemma2-9b-it_evaluacion.json";
 import o4 from "@/data/respuestas_o4-mini_evaluacion.json";
 
-// Fila genérica (coincide con tu JSON)
 type DataRow = Record<string, string | number | boolean | null | undefined>;
-
-// (Si no lo usas, mejor elimina por completo para evitar warning)
-// const MODEL_OPTIONS = [
-//   { key: "gemma", label: "Gemma 2-9b-it" },
-//   { key: "gpt4", label: "GPT-4.1-mini" },
-//   { key: "mistral", label: "Mistral Saba-24b" },
-// ];
 
 type ModelData = {
   data: DataRow[];
@@ -38,10 +30,9 @@ export default function Home() {
 
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [showTopics, setShowTopics] = useState(false);
-  // El setter no se usa: renómbralo a _ para evitar no-unused-vars
-  const [selectedModelForTopics, _setSelectedModelForTopics] = useState<
-    "gemma" | "gpt4" | "mistral"
-  >("gemma");
+  const [selectedModelForTopics] = useState<"gemma" | "gpt4" | "mistral">(
+    "gemma"
+  );
 
   // Mapeo de modelos a sus datasets
   const modelDataMap: Record<string, ModelData> = {
@@ -199,19 +190,20 @@ export default function Home() {
           </motion.section>
 
           <motion.footer
-            className="mt-16 pt-8 border-t border-slate-200"
+            className="mt-16 pt-6 border-t border-slate-200 "
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <div className="text-center">
-              <p className="text-sm text-slate-500">
-                <span className="font-medium text-slate-700">
-                  Natalia Burguillo Martín
-                </span>{" "}
-                • Diseño de un Marco e Implementación de Evaluación para Grandes
+            <div className="text-center space-y-1">
+              <p className="text-base font-semibold text-slate-700">
+                Natalia Burguillo Martín
+              </p>
+              <p className="text-xs text-slate-600">TFG · ETSIT · UPM</p>
+              <p className="text-xs text-slate-500 max-w-md mx-auto leading-snug">
+                Diseño e Implementación de un Marco de Evaluación para Grandes
                 Modelos de Lenguaje en el Ámbito de las Tecnologías de la
-                Información y las Comunicaciones • TFG ETSIT UPM
+                Información y las Comunicaciones
               </p>
             </div>
           </motion.footer>

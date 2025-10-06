@@ -383,7 +383,7 @@ const DataTable: React.FC<DataTableProps> = ({
       {/* Filtro global (igual que antes) */}
       <div className="mb-4 flex justify-center">
         <div className="relative max-w-lg w-full">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 !text-gray-800" />
           <input
             type="text"
             placeholder="Filter"
