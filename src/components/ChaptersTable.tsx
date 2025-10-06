@@ -18,8 +18,9 @@ import { Search, ArrowUpDown, ArrowUp, ArrowDown, Info } from "lucide-react";
 import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
+import o4miniRaw from "../data/respuestas_o4-mini_evaluacion_temario.json";
 
-type Modelo = "gemma" | "gpt4" | "mistral";
+type Modelo = "gemma" | "gpt4" | "mistral" | "o4mini";
 
 type RowRecord = Record<string, string | number | boolean | null | undefined>;
 type ModeloJson = { headers: string[]; data: RowRecord[] };
@@ -28,6 +29,7 @@ const MODELS: Record<Modelo, RowRecord[]> = {
   gemma: (gemmaRaw as ModeloJson).data ?? [],
   gpt4: (gpt4Raw as ModeloJson).data ?? [],
   mistral: (mistralRaw as ModeloJson).data ?? [],
+  o4mini: (o4miniRaw as ModeloJson).data ?? [],
 };
 
 // ===== Tipos =====
@@ -420,28 +422,39 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
 export default ChaptersTable;
 
 // ====== Subcomponente: selector de modelo ======
+const MODEL_LABELS: Record<Modelo, string> = {
+  gemma: "Gemma 2-9b-it",
+  gpt4: "GPT-4.1-mini",
+  mistral: "Mistral Saba-24b",
+  o4mini: "O4-mini",
+};
+
 const ModelSelector: React.FC<{
   currentModel: Modelo;
   onChange: (m: Modelo) => void;
 }> = ({ currentModel, onChange }) => {
-  const models: Modelo[] = ["gemma", "gpt4", "mistral"];
+  const models: Modelo[] = ["gemma", "gpt4", "mistral", "o4mini"];
   return (
-    <div className="flex items-center gap-2">
-      <span className="block mb-2 font-semibold">Selecciona el modelo:</span>
-      <div className="inline-flex items-center gap-2 mb-2">
+    <div className="flex items-center gap-3 mb-6">
+      <span className="font-medium text-slate-700 text-sm">Modelo:</span>
+      <div className="flex gap-1">
         {models.map((m) => {
           const active = currentModel === m;
           return (
             <button
               key={m}
               onClick={() => onChange(m)}
-              className={`px-3 py-1 rounded-full text-sm font-medium ring-1 ring-inset transition-colors ${
-                active
-                  ? "bg-blue-600 text-white ring-blue-600"
-                  : "bg-white text-gray-700 ring-gray-300 hover:bg-gray-50"
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors duration-150 hover:font-bold hover:shadow-2xl
+                ${
+                  active
+                    ? "bg-slate-900 text-white border-slate-900 shadow-sm !font-bold"
+                    : "bg-white text-slate-700 border-slate-300 hover:bg-slate-100"
+                }`}
+              style={{
+                letterSpacing: "0.01em",
+              }}
             >
-              {m.charAt(0).toUpperCase() + m.slice(1)}
+              {MODEL_LABELS[m]}
             </button>
           );
         })}

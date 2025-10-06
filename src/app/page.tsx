@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import DataTable from "@/components/DataTable";
 import ChaptersTable from "@/components/ChaptersTable";
 import ModelDataTable from "@/components/ModelDataTable";
+import CompareModels from "@/components/CompareModels";
 import { FileSpreadsheet, ArrowLeft } from "lucide-react";
 
 import benchmarkData from "@/data/resumen_modelos.json";
@@ -30,6 +31,7 @@ export default function Home() {
 
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [showTopics, setShowTopics] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
   const [selectedModelForTopics] = useState<"gemma" | "gpt4" | "mistral">(
     "gemma"
   );
@@ -71,6 +73,7 @@ export default function Home() {
   const handleBackClick = () => {
     setSelectedModel(null);
     setShowTopics(false);
+    setShowCompare(false);
   };
 
   const getModelData = (modelName: string): ModelData => {
@@ -98,7 +101,7 @@ export default function Home() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {selectedModel && (
+                {selectedModel && !showCompare && (
                   <button
                     onClick={handleBackClick}
                     className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors"
@@ -112,14 +115,18 @@ export default function Home() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-semibold text-slate-900">
-                    {showTopics
+                    {showCompare
+                      ? "Comparar preguntas entre modelos"
+                      : showTopics
                       ? "Accuracy por temas"
                       : selectedModel
                       ? `Detalles: ${selectedModel}`
                       : "TIC-QA Benchmark"}
                   </h1>
                   <p className="text-sm text-slate-500">
-                    {showTopics
+                    {showCompare
+                      ? "Compara las respuestas de los modelos para cada pregunta"
+                      : showTopics
                       ? "Porcentaje de acierto por tema y modelo"
                       : selectedModel
                       ? "Respuestas detalladas del modelo"
@@ -128,17 +135,25 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-center gap-4 text-sm">
-                {!selectedModel && (
-                  <button
-                    className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors ${
-                      showTopics
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-100 hover:bg-blue-100 text-blue-700"
-                    }`}
-                    onClick={() => setShowTopics((prev) => !prev)}
-                  >
-                    Por temas
-                  </button>
+                {!selectedModel && !showCompare && (
+                  <>
+                    <button
+                      className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors ${
+                        showTopics
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 hover:bg-blue-100 text-blue-700"
+                      }`}
+                      onClick={() => setShowTopics((prev) => !prev)}
+                    >
+                      Por temas
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded-lg font-semibold shadow transition-colors bg-indigo-100 hover:bg-indigo-200 text-indigo-700"
+                      onClick={() => setShowCompare(true)}
+                    >
+                      Comparar preguntas
+                    </button>
+                  </>
                 )}
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-lg">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
@@ -164,14 +179,20 @@ export default function Home() {
           </motion.header>
 
           <motion.section
-            key={selectedModel || (showTopics ? "topics" : "summary")}
+            key={
+              showCompare
+                ? "compare"
+                : selectedModel || (showTopics ? "topics" : "summary")
+            }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 overflow-hidden">
               <div className="p-8">
-                {showTopics ? (
+                {showCompare ? (
+                  <CompareModels onBack={() => setShowCompare(false)} />
+                ) : showTopics ? (
                   <ChaptersTable selectedModel={selectedModelForTopics} />
                 ) : selectedModel ? (
                   <ModelDataTable
