@@ -8,6 +8,7 @@ import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
 import o4miniRaw from "../data/respuestas_o4-mini_evaluacion_temario.json";
 import preguntasRaw from "../data/preguntas_evaluacion.json";
+import temarioRaw from "../data/temario.json";
 
 type RowRecord = Record<string, string | number | boolean | null | undefined>;
 type ModeloJson = { headers: string[]; data: RowRecord[] };
@@ -37,6 +38,21 @@ const MODELS = [
 
 // Carga preguntas base
 const preguntasData = (preguntasRaw as ModeloJson).data ?? [];
+
+// Carga temario
+const temarioData =
+  (temarioRaw as { headers: string[]; data: RowRecord[] }).data ?? [];
+
+// Mapas para títulos de bloque y tema
+const BLOQUE_TITULOS: Record<string, string> = {};
+const TEMA_TITULOS: Record<string, string> = {};
+
+temarioData.forEach((row) => {
+  if (row["Bloque"] && row["Título Bloque"])
+    BLOQUE_TITULOS[String(row["Bloque"])] = String(row["Título Bloque"]);
+  if (row["Tema"] && row["Título Tema"])
+    TEMA_TITULOS[String(row["Tema"])] = String(row["Título Tema"]);
+});
 
 function getAllQuestions() {
   return preguntasData.map((row) => ({
@@ -161,43 +177,14 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+      {/* Fila de volver y paginador */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <button
           onClick={onBack}
           className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium shadow border border-slate-200"
         >
           ← Volver
         </button>
-        <div className="flex flex-wrap gap-3 items-center">
-          <label className="text-sm font-medium text-slate-700">
-            Bloque:
-            <select
-              className="ml-2 px-2 py-1 rounded border border-slate-300 bg-white text-slate-800"
-              value={selectedBloque}
-              onChange={(e) => setSelectedBloque(e.target.value)}
-            >
-              {bloques.map((bloque) => (
-                <option key={bloque} value={bloque}>
-                  {bloque}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-sm font-medium text-slate-700">
-            Tema:
-            <select
-              className="ml-2 px-2 py-1 rounded border border-slate-300 bg-white text-slate-800"
-              value={selectedTema}
-              onChange={(e) => setSelectedTema(e.target.value)}
-            >
-              {temas.map((tema) => (
-                <option key={tema} value={tema}>
-                  {tema}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setCurrent((c) => Math.max(0, c - 1))}
@@ -219,6 +206,50 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
             Siguiente
           </button>
         </div>
+      </div>
+
+      {/* Fila de selects centrados y bonitos */}
+      <div className="flex justify-center gap-6 mb-8">
+        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+          Bloque:
+          <span className="relative">
+            <select
+              className="appearance-none px-4 py-2 pr-8 rounded-lg border border-slate-300 bg-white text-slate-800 shadow focus:ring-2 focus:ring-blue-200 transition font-medium"
+              value={selectedBloque}
+              onChange={(e) => setSelectedBloque(e.target.value)}
+            >
+              {bloques.map((bloque) => (
+                <option key={bloque} value={bloque}>
+                  {bloque}
+                  {BLOQUE_TITULOS[bloque] ? ` - ${BLOQUE_TITULOS[bloque]}` : ""}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
+              ▼
+            </span>
+          </span>
+        </label>
+        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+          Tema:
+          <span className="relative">
+            <select
+              className="appearance-none px-4 py-2 pr-8 rounded-lg border border-slate-300 bg-white text-slate-800 shadow focus:ring-2 focus:ring-blue-200 transition font-medium"
+              value={selectedTema}
+              onChange={(e) => setSelectedTema(e.target.value)}
+            >
+              {temas.map((tema) => (
+                <option key={tema} value={tema}>
+                  {tema}
+                  {TEMA_TITULOS[tema] ? ` - ${TEMA_TITULOS[tema]}` : ""}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
+              ▼
+            </span>
+          </span>
+        </label>
       </div>
 
       {currentQ ? (
