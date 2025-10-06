@@ -172,16 +172,42 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
           const cellValue = String(info.getValue() ?? "");
           const isEmpty =
             !cellValue || cellValue === "[]" || cellValue.trim() === "";
-          return (
-            <span
-              className={`text-xs px-2 py-1 rounded ${
-                isEmpty
-                  ? "text-gray-400 bg-gray-50"
-                  : "text-purple-700 bg-purple-50 font-mono"
-              }`}
-            >
-              {isEmpty ? "Empty" : "Data"}
+
+          let parsed: { token: string; logprob: number }[] = [];
+          try {
+            parsed = JSON.parse(cellValue);
+          } catch {
+            // Si no es JSON válido, deja vacío
+          }
+
+          return isEmpty ? (
+            <span className="text-xs px-2 py-1 rounded text-gray-400 bg-gray-50">
+              Empty
             </span>
+          ) : (
+            <div className="flex flex-col gap-1 max-w-xs">
+              {parsed.length > 0 ? (
+                parsed.slice(0, 5).map((item, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs font-mono text-purple-700 bg-purple-50 px-2 py-1 rounded cursor-help"
+                    title={`Token: ${item.token}\nLogprob: ${item.logprob}`}
+                  >
+                    {item.token}:{" "}
+                    <span className="font-bold">{item.logprob.toFixed(3)}</span>
+                  </span>
+                ))
+              ) : (
+                <span
+                  className="text-xs px-2 py-1 rounded text-purple-700 bg-purple-50 font-mono cursor-help"
+                  title={cellValue}
+                >
+                  {cellValue.length > 40
+                    ? cellValue.substring(0, 40) + "..."
+                    : cellValue}
+                </span>
+              )}
+            </div>
           );
         },
         enableSorting: true,

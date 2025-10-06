@@ -14,31 +14,26 @@ import {
 } from "@tanstack/react-table";
 import { Search, ArrowUpDown, ArrowUp, ArrowDown, Info } from "lucide-react";
 
-// ===== Carga de datos (igual que tu componente original) =====
+// ===== Carga de datos =====
 import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
 
 type Modelo = "gemma" | "gpt4" | "mistral";
 
-type ModeloJson = {
-  headers: string[];
-  data: any[];
-};
+type RowRecord = Record<string, string | number | boolean | null | undefined>;
+type ModeloJson = { headers: string[]; data: RowRecord[] };
 
-const MODELS: Record<Modelo, any[]> = {
-  gemma: (gemmaRaw as ModeloJson).data || [],
-  gpt4: (gpt4Raw as ModeloJson).data || [],
-  mistral: (mistralRaw as ModeloJson).data || [],
+const MODELS: Record<Modelo, RowRecord[]> = {
+  gemma: (gemmaRaw as ModeloJson).data ?? [],
+  gpt4: (gpt4Raw as ModeloJson).data ?? [],
+  mistral: (mistralRaw as ModeloJson).data ?? [],
 };
 
 // ===== Tipos =====
-interface RespuestaRaw {
-  [key: string]: any;
-}
-
 interface TemaStats {
   tema: string;
+  bloque?: string;
   aciertos: number;
   fallos: number;
   blanco: number;
@@ -50,7 +45,14 @@ interface ChaptersTableProps {
   selectedModel?: Modelo;
 }
 
-// ===== Helpers de normalización / filtro global (mismo estilo que la tabla de modelos) =====
+// ===== Extiende meta de columnas (para tooltips) =====
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData, TValue> {
+    tooltip?: string;
+  }
+}
+
+// ===== Helpers =====
 const normalizeText = (text: string, keepSpaces = false): string => {
   const normalized = text
     .toLowerCase()
@@ -83,44 +85,54 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // Agrupar por Tema en memo
+  // Agrupar por Tema
   const rows: TemaStats[] = useMemo(() => {
-    const data = MODELS[currentModel] || [];
-    const grouped: Record<string, Omit<TemaStats, "tema" | "accuracyPct">> = {};
+    const data = MODELS[currentModel] ?? [];
+    const grouped: Record<
+      string,
+      Omit<TemaStats, "tema" | "accuracyPct"> & { bloque?: string }
+    > = {};
 
-    (data as RespuestaRaw[]).forEach((item) => {
+    data.forEach((item) => {
       const tema = item["Tema"] ? String(item["Tema"]) : "Sin tema";
       if (!grouped[tema]) {
-        grouped[tema] = { aciertos: 0, fallos: 0, blanco: 0, total: 0 };
+        grouped[tema] = {
+          aciertos: 0,
+          fallos: 0,
+          blanco: 0,
+          total: 0,
+          bloque: (item["Bloque"] as string | undefined) ?? "",
+        };
       }
-      grouped[tema].total++;
-      const resp = item["Respuesta Modelo"];
-      if (resp === "" || resp == null) {
-        grouped[tema].blanco++;
-      } else if (item["Acierto"] === true) {
-        grouped[tema].aciertos++;
+      grouped[tema].total += 1;
+
+      const respuestaVacia =
+        item["Respuesta Modelo"] === "" || item["Respuesta Modelo"] == null;
+      const aciertoEstricto = item["Acierto"] === true;
+      if (respuestaVacia) {
+        grouped[tema].blanco += 1;
+      } else if (aciertoEstricto) {
+        grouped[tema].aciertos += 1;
       } else {
-        grouped[tema].fallos++;
+        grouped[tema].fallos += 1;
       }
     });
 
     return Object.entries(grouped).map(([tema, s]) => {
-      const contestadas = Math.max(0, s.total - s.blanco);
-      const accuracy = contestadas > 0 ? (s.aciertos / contestadas) * 100 : 0;
-      return { tema, ...s, accuracyPct: accuracy };
+      const denom = s.total - s.blanco;
+      const accuracy = denom > 0 ? (s.aciertos / denom) * 100 : 0;
+      return { tema, bloque: s.bloque ?? "", ...s, accuracyPct: accuracy };
     });
   }, [currentModel]);
 
-  // ===== Columnas con tooltips y badges al estilo "bonito" =====
-  type ColMeta<TData, TValue> = { getTooltip?: () => string };
-  const columns: ColumnDef<TemaStats, any>[] = useMemo(
+  const columns: ColumnDef<TemaStats>[] = useMemo(
     () => [
       {
         accessorKey: "tema",
         header: "Tema",
         enableSorting: true,
         enableColumnFilter: true,
-        meta: { getTooltip: () => "Nombre del tema del temario" },
+        meta: { tooltip: "Nombre del tema del temario" },
         cell: (info) => (
           <span className="text-sm font-semibold text-gray-900">
             {String(info.getValue() ?? "-")}
@@ -128,13 +140,35 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
         ),
       },
       {
+        accessorKey: "bloque",
+        header: "Bloque",
+        meta: { tooltip: "Bloque temático de la pregunta" },
+        cell: ({ getValue }) => {
+          const cellValue = String(getValue() ?? "");
+          let colorClass = "bg-gray-100 text-gray-700";
+          if (cellValue.startsWith("A"))
+            colorClass = "bg-indigo-50 text-indigo-700";
+          else if (cellValue.startsWith("B"))
+            colorClass = "bg-sky-50 text-sky-700";
+          return (
+            <span
+              className={`text-xs font-mono px-2 py-1 rounded ${colorClass}`}
+            >
+              {cellValue}
+            </span>
+          );
+        },
+        enableSorting: true,
+        enableColumnFilter: true,
+      },
+      {
         accessorKey: "aciertos",
         header: "Aciertos",
         enableSorting: true,
-        meta: { getTooltip: () => "Respuestas correctas" },
-        cell: (info) => (
+        meta: { tooltip: "Respuestas correctas" },
+        cell: ({ getValue }) => (
           <span className="text-sm tabular-nums">
-            {Number(info.getValue() ?? 0).toLocaleString("en-US")}
+            {Number(getValue() ?? 0).toLocaleString("en-US")}
           </span>
         ),
       },
@@ -142,10 +176,10 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
         accessorKey: "fallos",
         header: "Fallos",
         enableSorting: true,
-        meta: { getTooltip: () => "Respuestas incorrectas" },
-        cell: (info) => (
+        meta: { tooltip: "Respuestas incorrectas" },
+        cell: ({ getValue }) => (
           <span className="text-sm tabular-nums">
-            {Number(info.getValue() ?? 0).toLocaleString("en-US")}
+            {Number(getValue() ?? 0).toLocaleString("en-US")}
           </span>
         ),
       },
@@ -153,10 +187,10 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
         accessorKey: "blanco",
         header: "En blanco",
         enableSorting: true,
-        meta: { getTooltip: () => "Respuestas no contestadas" },
-        cell: (info) => (
+        meta: { tooltip: "Respuestas no contestadas en la forma correcta" },
+        cell: ({ getValue }) => (
           <span className="text-sm tabular-nums">
-            {Number(info.getValue() ?? 0).toLocaleString("en-US")}
+            {Number(getValue() ?? 0).toLocaleString("en-US")}
           </span>
         ),
       },
@@ -164,10 +198,10 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
         accessorKey: "total",
         header: "Total",
         enableSorting: true,
-        meta: { getTooltip: () => "Total de preguntas por tema" },
-        cell: (info) => (
+        meta: { tooltip: "Total de preguntas por tema" },
+        cell: ({ getValue }) => (
           <span className="text-sm tabular-nums">
-            {Number(info.getValue() ?? 0).toLocaleString("en-US")}
+            {Number(getValue() ?? 0).toLocaleString("en-US")}
           </span>
         ),
       },
@@ -175,21 +209,15 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
         accessorKey: "accuracyPct",
         header: "% Accuracy",
         enableSorting: true,
-        meta: {
-          getTooltip: () => "Aciertos / (Total - Blancos) · 100",
-        },
-        cell: (info) => {
-          const pct = Number(info.getValue() ?? 0);
-          let colorClass = "";
-          if (pct >= 75)
-            colorClass =
-              "bg-green-50 text-green-800 ring-1 ring-inset ring-green-200";
-          else if (pct >= 50)
-            colorClass =
-              "bg-yellow-50 text-yellow-800 ring-1 ring-inset ring-yellow-200";
-          else
-            colorClass =
-              "bg-red-50 text-red-800 ring-1 ring-inset ring-red-200";
+        meta: { tooltip: "Aciertos / (Total - Blancos) · 100" },
+        cell: ({ getValue }) => {
+          const pct = Number(getValue() ?? 0);
+          const colorClass =
+            pct >= 75
+              ? "bg-green-50 text-green-800 ring-1 ring-inset ring-green-200"
+              : pct >= 50
+              ? "bg-yellow-50 text-yellow-800 ring-1 ring-inset ring-yellow-200"
+              : "bg-red-50 text-red-800 ring-1 ring-inset ring-red-200";
           return (
             <span
               className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium tabular-nums ${colorClass}`}
@@ -203,10 +231,9 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
     []
   );
 
-  // ===== Table instance =====
   const table = useReactTable({
     data: rows,
-    columns: columns as unknown as ColumnDef<TemaStats, any>[],
+    columns,
     state: { sorting, columnFilters, globalFilter },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -219,7 +246,9 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
     initialState: { pagination: { pageSize: 50 } },
   });
 
-  const getSortIcon = (column: { getIsSorted: () => string | false }) => {
+  const getSortIcon = (column: {
+    getIsSorted: () => false | "asc" | "desc";
+  }) => {
     const sortDirection = column.getIsSorted();
     if (sortDirection === "asc") return <ArrowUp className="h-4 w-4 ml-1" />;
     if (sortDirection === "desc") return <ArrowDown className="h-4 w-4 ml-1" />;
@@ -239,7 +268,6 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
 
   return (
     <div className="w-full p-6">
-      {/* Selector de modelo (píldoras) */}
       <ModelSelector currentModel={currentModel} onChange={setCurrentModel} />
 
       {/* Filtro global */}
@@ -264,9 +292,7 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id}>
                   {hg.headers.map((header) => {
-                    const tooltip = (
-                      header.column.columnDef as any
-                    ).meta?.getTooltip?.();
+                    const tooltip = header.column.columnDef.meta?.tooltip;
                     const headerLabel = String(header.column.columnDef.header);
                     return (
                       <th
@@ -393,7 +419,7 @@ const ChaptersTable: React.FC<ChaptersTableProps> = ({
 
 export default ChaptersTable;
 
-// ====== Subcomponente: selector de modelo bonito en forma de píldoras ======
+// ====== Subcomponente: selector de modelo ======
 const ModelSelector: React.FC<{
   currentModel: Modelo;
   onChange: (m: Modelo) => void;
