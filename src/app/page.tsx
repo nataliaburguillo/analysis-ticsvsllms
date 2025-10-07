@@ -6,6 +6,7 @@ import DataTable from "@/components/DataTable";
 import ChaptersTable from "@/components/ChaptersTable";
 import ModelDataTable from "@/components/ModelDataTable";
 import CompareModels from "@/components/CompareModels";
+import ExamineErrors from "@/components/ExamineErrors";
 import { FileSpreadsheet, ArrowLeft } from "lucide-react";
 
 import benchmarkData from "@/data/resumen_modelos.json";
@@ -32,6 +33,7 @@ export default function Home() {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [showTopics, setShowTopics] = useState(false);
   const [showCompare, setShowCompare] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
   const [selectedModelForTopics] = useState<"gemma" | "gpt4" | "mistral">(
     "gemma"
   );
@@ -74,6 +76,7 @@ export default function Home() {
     setSelectedModel(null);
     setShowTopics(false);
     setShowCompare(false);
+    setShowErrors(false);
   };
 
   const getModelData = (modelName: string): ModelData => {
@@ -101,7 +104,7 @@ export default function Home() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {selectedModel && !showCompare && (
+                {(selectedModel || showCompare || showErrors || showTopics) && (
                   <button
                     onClick={handleBackClick}
                     className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors"
@@ -115,7 +118,9 @@ export default function Home() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-semibold text-slate-900">
-                    {showCompare
+                    {showErrors
+                      ? "Preguntas falladas por modelo"
+                      : showCompare
                       ? "Comparar preguntas entre modelos"
                       : showTopics
                       ? "Accuracy por temas"
@@ -124,7 +129,9 @@ export default function Home() {
                       : "TIC-QA Benchmark"}
                   </h1>
                   <p className="text-sm text-slate-500">
-                    {showCompare
+                    {showErrors
+                      ? "Explora solo las preguntas que falla cada modelo"
+                      : showCompare
                       ? "Compara las respuestas de los modelos para cada pregunta"
                       : showTopics
                       ? "Porcentaje de acierto por tema y modelo"
@@ -135,7 +142,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex items-center gap-4 text-sm">
-                {!selectedModel && !showCompare && (
+                {!selectedModel && !showCompare && !showErrors && (
                   <>
                     <button
                       className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors ${
@@ -152,6 +159,12 @@ export default function Home() {
                       onClick={() => setShowCompare(true)}
                     >
                       Comparar preguntas
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded-lg font-semibold shadow transition-colors bg-red-100 hover:bg-red-200 text-red-700"
+                      onClick={() => setShowErrors(true)}
+                    >
+                      Preguntas falladas
                     </button>
                   </>
                 )}
@@ -180,7 +193,9 @@ export default function Home() {
 
           <motion.section
             key={
-              showCompare
+              showErrors
+                ? "errors"
+                : showCompare
                 ? "compare"
                 : selectedModel || (showTopics ? "topics" : "summary")
             }
@@ -190,7 +205,9 @@ export default function Home() {
           >
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 overflow-hidden">
               <div className="p-8">
-                {showCompare ? (
+                {showErrors ? (
+                  <ExamineErrors onBack={() => setShowErrors(false)} />
+                ) : showCompare ? (
                   <CompareModels onBack={() => setShowCompare(false)} />
                 ) : showTopics ? (
                   <ChaptersTable selectedModel={selectedModelForTopics} />

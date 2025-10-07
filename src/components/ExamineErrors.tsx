@@ -78,7 +78,7 @@ function parseOpciones(respuestas: string) {
   return opciones;
 }
 
-interface CompareModelsProps {
+interface ExamineErrorsProps {
   onBack?: () => void;
 }
 
@@ -88,8 +88,12 @@ const COLOR_MAP: Record<string, string> = {
   "": "bg-gray-50 text-gray-400 border-gray-200",
 };
 
-export default function CompareModels({ onBack }: CompareModelsProps) {
+export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
   const allQuestions = useMemo(() => getAllQuestions(), []);
+
+  // Modelo seleccionado
+  const [selectedModelKey, setSelectedModelKey] = useState(MODELS[0].key);
+  const selectedModel = MODELS.find((m) => m.key === selectedModelKey)!;
 
   // Extraer bloques únicos
   const bloques = useMemo(
@@ -143,64 +147,134 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
     [allQuestions, selectedBloque, selectedTema]
   );
 
+  // Solo las preguntas que falla el modelo seleccionado
+  const failedQuestions = useMemo(() => {
+    return filteredQuestions.filter((q) => {
+      const row =
+        selectedModel.data.find(
+          (r) => String(r["ID"] ?? r["CustomId"] ?? "") === String(q.ID)
+        ) || {};
+      return row["Acierto"] === false || row["Acierto"] === "false";
+    });
+  }, [filteredQuestions, selectedModel]);
+
   // Estado para pregunta actual
   const [current, setCurrent] = useState(0);
 
   // Reinicia el índice de pregunta cuando cambia el filtro
   useEffect(() => {
     setCurrent(0);
-  }, [selectedTema, selectedBloque, filteredQuestions.length]);
+  }, [selectedTema, selectedBloque, failedQuestions.length, selectedModelKey]);
 
-  const currentQ = filteredQuestions[current];
+  const currentQ = failedQuestions[current];
 
-  // Recoge la respuesta de cada modelo para la pregunta actual
-  const modelAnswers = useMemo(
-    () =>
-      currentQ
-        ? MODELS.map((model) => {
-            const row =
-              model.data.find(
-                (r) =>
-                  String(r["ID"] ?? r["CustomId"] ?? "") === String(currentQ.ID)
-              ) || {};
-            return {
-              key: model.key,
-              label: model.label,
-              respuesta: row["Respuesta Modelo"] ?? "",
-              acierto: row["Acierto"] ?? "",
-              respuestaCompleta: row["Respuesta Completa"] ?? "",
-            };
-          })
-        : [],
-    [currentQ]
-  );
+  // Recoge la respuesta del modelo seleccionado para la pregunta actual
+  const modelAnswer = useMemo(() => {
+    if (!currentQ) return null;
+    const row =
+      selectedModel.data.find(
+        (r) => String(r["ID"] ?? r["CustomId"] ?? "") === String(currentQ.ID)
+      ) || {};
+    return {
+      respuesta: row["Respuesta Modelo"] ?? "",
+      acierto: row["Acierto"] ?? "",
+      respuestaCompleta: row["Respuesta Completa"] ?? "",
+    };
+  }, [currentQ, selectedModel]);
+
+  // Función para ir a la siguiente pregunta o tema
+  function handleNext() {
+    if (current < failedQuestions.length - 1) {
+      setCurrent((c) => c + 1);
+    } else {
+      // Buscar el índice del tema actual en la lista de temas
+      const idx = temas.indexOf(selectedTema);
+      if (idx !== -1 && idx < temas.length - 1) {
+        setSelectedTema(temas[idx + 1]);
+        setCurrent(0);
+      }
+    }
+  }
+
+  // Función para ir a la pregunta anterior o tema anterior si es la primera
+  function handlePrev() {
+    if (current > 0) {
+      setCurrent((c) => c - 1);
+    } else {
+      const idx = temas.indexOf(selectedTema);
+      if (idx > 0) {
+        const prevTema = temas[idx - 1];
+        setSelectedTema(prevTema);
+        // Espera a que failedQuestions se actualice antes de poner el último
+        setTimeout(() => {
+          // Calcula el número de preguntas falladas en el nuevo tema
+          const prevFailedQuestions = allQuestions
+            .filter(
+              (q) =>
+                String(q.Bloque) === selectedBloque &&
+                String(q.Tema) === prevTema
+            )
+            .sort((a, b) => Number(a.ID) - Number(b.ID))
+            .filter((q) => {
+              const row =
+                selectedModel.data.find(
+                  (r) => String(r["ID"] ?? r["CustomId"] ?? "") === String(q.ID)
+                ) || {};
+              return row["Acierto"] === false || row["Acierto"] === "false";
+            });
+          setCurrent(Math.max(0, prevFailedQuestions.length - 1));
+        }, 0);
+      }
+    }
+  }
 
   return (
     <div>
-      {/* Fila de volver y paginador */}
-      <div className="flex flex-wrap items-center justify-end gap-4 mb-6">
+      {/* Fila de volver, paginador y modelo */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         {/* <button
           onClick={onBack}
           className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium shadow border border-slate-200"
         >
           ← Volver
         </button> */}
-        <div className="flex items-center gap-2">
+        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+          Modelo:
+          <span className="relative">
+            <select
+              className="appearance-none px-4 py-2 pr-8 rounded-lg border border-slate-300 bg-white text-slate-800 shadow focus:ring-2 focus:ring-blue-200 transition font-medium"
+              value={selectedModelKey}
+              onChange={(e) => setSelectedModelKey(e.target.value)}
+            >
+              {MODELS.map((m) => (
+                <option key={m.key} value={m.key}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400">
+              ▼
+            </span>
+          </span>
+        </label>
+        <div className="flex items-center gap-4">
           <button
-            onClick={() => setCurrent((c) => Math.max(0, c - 1))}
-            disabled={current === 0}
+            onClick={handlePrev}
+            disabled={current === 0 && temas.indexOf(selectedTema) === 0}
             className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 disabled:opacity-50"
           >
             Anterior
           </button>
           <span className="text-sm text-slate-600">
-            Pregunta {current + 1} de {filteredQuestions.length}
+            Pregunta {failedQuestions.length === 0 ? 0 : current + 1} de{" "}
+            {failedQuestions.length}
           </span>
           <button
-            onClick={() =>
-              setCurrent((c) => Math.min(filteredQuestions.length - 1, c + 1))
+            onClick={handleNext}
+            disabled={
+              temas.indexOf(selectedTema) === temas.length - 1 &&
+              current === failedQuestions.length - 1
             }
-            disabled={current === filteredQuestions.length - 1}
             className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 disabled:opacity-50"
           >
             Siguiente
@@ -208,7 +282,7 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
         </div>
       </div>
 
-      {/* Fila de selects centrados y bonitos */}
+      {/* Fila de selects centrados */}
       <div className="flex justify-center gap-6 mb-8">
         <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
           Bloque:
@@ -252,34 +326,32 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
         </label>
       </div>
 
-      {currentQ ? (
+      {currentQ && modelAnswer ? (
         <>
           <div className="bg-white rounded-2xl shadow p-6 border border-slate-100 mb-6">
             <div className="flex flex-wrap gap-6 mb-4">
               <div>
                 <div className="text-xs text-slate-500 font-medium">Tema</div>
                 <div className="text-base font-semibold text-blue-700">
-                  {currentQ.Tema}
+                  {currentQ.Tema}{" "}
+                  {TEMA_TITULOS[String(currentQ.Tema)]
+                    ? `- ${TEMA_TITULOS[String(currentQ.Tema)]}`
+                    : ""}
                 </div>
               </div>
               <div>
                 <div className="text-xs text-slate-500 font-medium">Bloque</div>
                 <div className="text-base font-semibold text-indigo-700">
-                  {currentQ.Bloque}
+                  {currentQ.Bloque}{" "}
+                  {BLOQUE_TITULOS[String(currentQ.Bloque)]
+                    ? `- ${BLOQUE_TITULOS[String(currentQ.Bloque)]}`
+                    : ""}
                 </div>
               </div>
               <div>
                 <div className="text-xs text-slate-500 font-medium">ID</div>
                 <div className="text-base font-semibold text-slate-700">
                   {currentQ.ID}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-slate-500 font-medium">
-                  Respuesta correcta
-                </div>
-                <div className="text-base font-semibold text-green-700">
-                  {currentQ.RespuestaCorrecta}
                 </div>
               </div>
             </div>
@@ -317,47 +389,45 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
 
           <div className="bg-white rounded-2xl shadow p-6 border border-slate-100">
             <div className="text-sm font-semibold text-slate-700 mb-3">
-              Respuestas de los modelos
+              Respuesta del modelo
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              {modelAnswers.map((ans) => (
-                <div
-                  key={ans.key}
-                  className={`rounded-lg border px-4 py-3 flex flex-col items-center text-center ${
-                    COLOR_MAP[String(ans.acierto)]
-                  }`}
-                >
-                  <div className="text-xs font-semibold uppercase tracking-wide mb-1">
-                    {ans.label}
-                  </div>
-                  <div className="text-2xl font-bold">
-                    {ans.respuesta || <span className="text-gray-400">–</span>}
-                  </div>
-                  <div className="text-xs mt-1 mb-2">
-                    {ans.acierto === true || ans.acierto === "true"
-                      ? "Acierto"
-                      : ans.acierto === false || ans.acierto === "false"
-                      ? "Fallo"
-                      : "Sin respuesta"}
-                  </div>
-                  <div className="text-xs text-slate-600 text-left max-h-32 overflow-y-auto border-t pt-2 w-full">
-                    <span className="block font-semibold text-slate-500 mb-1">
-                      Respuesta completa:
-                    </span>
-                    <span className="whitespace-pre-line">
-                      {ans.respuestaCompleta || (
-                        <span className="text-gray-400">Sin explicación</span>
-                      )}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div
+              className={`rounded-lg border px-4 py-3 flex flex-col items-center text-center ${
+                COLOR_MAP[String(modelAnswer.acierto)]
+              }`}
+            >
+              <div className="text-xs font-semibold uppercase tracking-wide mb-1">
+                {selectedModel.label}
+              </div>
+              <div className="text-2xl font-bold">
+                {modelAnswer.respuesta || (
+                  <span className="text-gray-400">–</span>
+                )}
+              </div>
+              <div className="text-xs mt-1 mb-2">
+                {modelAnswer.acierto === true || modelAnswer.acierto === "true"
+                  ? "Acierto"
+                  : modelAnswer.acierto === false ||
+                    modelAnswer.acierto === "false"
+                  ? "Fallo"
+                  : "Sin respuesta"}
+              </div>
+              <div className="text-xs text-slate-600 text-left max-h-32 overflow-y-auto border-t pt-2 w-full">
+                <span className="block font-semibold text-slate-500 mb-1">
+                  Respuesta completa:
+                </span>
+                <span className="whitespace-pre-line">
+                  {modelAnswer.respuestaCompleta || (
+                    <span className="text-gray-400">Sin explicación</span>
+                  )}
+                </span>
+              </div>
             </div>
           </div>
         </>
       ) : (
         <div className="text-center text-slate-500 py-12">
-          No hay preguntas para este filtro.
+          No hay preguntas falladas de este tema por este modelo.
         </div>
       )}
     </div>
