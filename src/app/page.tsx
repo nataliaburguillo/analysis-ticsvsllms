@@ -38,7 +38,6 @@ export default function Home() {
     "gemma"
   );
 
-  // Mapeo de modelos a sus datasets
   const modelDataMap: Record<string, ModelData> = {
     "gpt-4.1-mini": gpt as ModelData,
     "gpt-4.1-mini_logprobs": gpt_logprobs as ModelData,

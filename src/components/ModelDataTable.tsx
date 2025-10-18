@@ -22,7 +22,6 @@ interface DataTableProps {
   headers: string[];
 }
 
-// Extender ColumnMeta para tooltip
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData = unknown, TValue = unknown> {
     getTooltip?: () => string;
@@ -33,9 +32,8 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [showFTYes, setShowFTYes] = useState(true); // checkbox para filtrar aciertos
+  const [showFTYes, setShowFTYes] = useState(true);
 
-  // ===== helpers de normalización (igual estilo que antes) =====
   const normalizeText = (text: string, keepSpaces = false): string => {
     const normalized = text
       .toLowerCase()
@@ -59,7 +57,6 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
     return searchWords.every((word) => normalizedRowContent.includes(word));
   };
 
-  // ===== mapeo robusto de headers a los nombres reales del excel =====
   const H = useMemo(() => {
     const stripAccents = (s: string) =>
       s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -102,7 +99,6 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
     };
   }, [headers]);
 
-  // ===== filtro por acierto (igual UX que antes: marcado = todo, desmarcado = solo correctos) =====
   const filteredData = useMemo(() => {
     if (showFTYes) return data;
     return data.filter((row) => {
@@ -115,7 +111,6 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
     });
   }, [data, showFTYes, H.acierto]);
 
-  // ===== definición de columnas =====
   const columns = useMemo(() => {
     return [
       {
@@ -344,7 +339,6 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
         </div>
       </div>
 
-      {/* Tabla */}
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         <div className="w-full overflow-x-auto">
           <table className="w-full table-auto divide-y divide-gray-200 min-w-full">
@@ -435,7 +429,6 @@ const ModelDataTable: React.FC<DataTableProps> = ({ data, headers }) => {
         </div>
       </div>
 
-      {/* Paginación (igual que antes) */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between w-full">
           <p className="text-sm text-gray-700">

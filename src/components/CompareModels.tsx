@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 
-// Importa los datos de todos los modelos
 import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
@@ -36,14 +35,11 @@ const MODELS = [
   },
 ];
 
-// Carga preguntas base
 const preguntasData = (preguntasRaw as ModeloJson).data ?? [];
 
-// Carga temario
 const temarioData =
   (temarioRaw as { headers: string[]; data: RowRecord[] }).data ?? [];
 
-// Mapas para títulos de bloque y tema
 const BLOQUE_TITULOS: Record<string, string> = {};
 const TEMA_TITULOS: Record<string, string> = {};
 
@@ -100,28 +96,6 @@ const BLOQUE_COLORS: Record<string, string> = {
   B4: "violet",
 };
 
-// Utilidad para obtener clases de color de Tailwind (segura para Tailwind JIT)
-function getBlockColorClass(bloque: string, shade: number = 700) {
-  const color = BLOQUE_COLORS[bloque] || "gray";
-  // Solo permite colores y tonos válidos de Tailwind
-  const allowedColors = [
-    "blue",
-    "indigo",
-    "emerald",
-    "cyan",
-    "orange",
-    "pink",
-    "teal",
-    "purple",
-    "gray",
-  ];
-  const allowedShades = [700, 500];
-  if (!allowedColors.includes(color) || !allowedShades.includes(shade))
-    return "text-gray-700";
-  return `text-${color}-${shade}`;
-}
-
-// Helper para clases seguras con Tailwind JIT (arcoíris)
 function blockColorClass(bloque: string, shade: number) {
   switch (BLOQUE_COLORS[bloque]) {
     case "red":
@@ -148,7 +122,6 @@ function blockColorClass(bloque: string, shade: number) {
 export default function CompareModels({ onBack }: CompareModelsProps) {
   const allQuestions = useMemo(() => getAllQuestions(), []);
 
-  // Extraer bloques únicos
   const bloques = useMemo(
     () =>
       Array.from(
@@ -157,12 +130,10 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
     [allQuestions]
   );
 
-  // Estado para bloque y tema seleccionados
   const [selectedBloque, setSelectedBloque] = useState<string>(
     bloques[0] || ""
   );
 
-  // Temas únicos para el bloque seleccionado
   const temas = useMemo(
     () =>
       Array.from(
@@ -176,15 +147,12 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
     [allQuestions, selectedBloque]
   );
 
-  // Estado para tema seleccionado
   const [selectedTema, setSelectedTema] = useState<string>("");
 
-  // Sincroniza el tema seleccionado cuando cambian los temas disponibles
   useEffect(() => {
     if (!temas.includes(selectedTema)) {
       setSelectedTema(temas[0] || "");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBloque, temas.join(",")]);
 
   // Filtrar preguntas por bloque y tema, y ordenarlas por ID
@@ -200,7 +168,6 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
     [allQuestions, selectedBloque, selectedTema]
   );
 
-  // Estado para pregunta actual
   const [current, setCurrent] = useState(0);
 
   // Reinicia el índice de pregunta cuando cambia el filtro
@@ -210,7 +177,6 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
 
   const currentQ = filteredQuestions[current];
 
-  // Recoge la respuesta de cada modelo para la pregunta actual
   const modelAnswers = useMemo(
     () =>
       currentQ
@@ -234,14 +200,7 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
 
   return (
     <div>
-      {/* Fila de volver y paginador */}
       <div className="flex flex-wrap items-center justify-end gap-4 mb-6">
-        {/* <button
-          onClick={onBack}
-          className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium shadow border border-slate-200"
-        >
-          ← Volver
-        </button> */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setCurrent((c) => Math.max(0, c - 1))}
@@ -265,7 +224,6 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
         </div>
       </div>
 
-      {/* Fila de selects centrados y bonitos */}
       <div className="flex justify-center gap-6 mb-8">
         <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
           Bloque:

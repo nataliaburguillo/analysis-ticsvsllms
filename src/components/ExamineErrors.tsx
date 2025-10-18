@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 
-// Importa los datos de todos los modelos
 import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
@@ -36,14 +35,11 @@ const MODELS = [
   },
 ];
 
-// Carga preguntas base
 const preguntasData = (preguntasRaw as ModeloJson).data ?? [];
 
-// Carga temario
 const temarioData =
   (temarioRaw as { headers: string[]; data: RowRecord[] }).data ?? [];
 
-// Mapas para títulos de bloque y tema
 const BLOQUE_TITULOS: Record<string, string> = {};
 const TEMA_TITULOS: Record<string, string> = {};
 
@@ -88,7 +84,6 @@ const COLOR_MAP: Record<string, string> = {
   "": "bg-gray-50 text-gray-400 border-gray-200",
 };
 
-// Paleta de colores para bloques en orden arcoíris SOLO A1-A4 y B1-B4 (A4 es teal)
 const BLOQUE_COLORS: Record<string, string> = {
   A1: "red",
   A2: "orange",
@@ -100,7 +95,6 @@ const BLOQUE_COLORS: Record<string, string> = {
   B4: "violet",
 };
 
-// Helper seguro para clases Tailwind JIT
 function blockColorClass(bloque: string, shade: number) {
   const color = BLOQUE_COLORS[bloque];
   if (!color) return "text-gray-700";
@@ -127,14 +121,11 @@ type FilterType = "errores" | "aciertos" | "todos";
 export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
   const allQuestions = useMemo(() => getAllQuestions(), []);
 
-  // Modelo seleccionado
   const [selectedModelKey, setSelectedModelKey] = useState(MODELS[0].key);
   const selectedModel = MODELS.find((m) => m.key === selectedModelKey)!;
 
-  // Nuevo estado para el filtro
   const [filterType, setFilterType] = useState<FilterType>("errores");
 
-  // Extraer bloques únicos
   const bloques = useMemo(
     () =>
       Array.from(
@@ -143,12 +134,10 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     [allQuestions]
   );
 
-  // Estado para bloque y tema seleccionados
   const [selectedBloque, setSelectedBloque] = useState<string>(
     bloques[0] || ""
   );
 
-  // Temas únicos para el bloque seleccionado
   const temas = useMemo(
     () =>
       Array.from(
@@ -162,18 +151,14 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     [allQuestions, selectedBloque]
   );
 
-  // Estado para tema seleccionado
   const [selectedTema, setSelectedTema] = useState<string>("");
 
-  // Sincroniza el tema seleccionado cuando cambian los temas disponibles
   useEffect(() => {
     if (!temas.includes(selectedTema)) {
       setSelectedTema(temas[0] || "");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBloque, temas.join(",")]);
 
-  // Filtrar preguntas por bloque y tema, y ordenarlas por ID
   const filteredQuestions = useMemo(
     () =>
       allQuestions
@@ -186,7 +171,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     [allQuestions, selectedBloque, selectedTema]
   );
 
-  // Filtrado según el tipo de filtro seleccionado
   const shownQuestions = useMemo(() => {
     return filteredQuestions.filter((q) => {
       const row =
@@ -203,10 +187,8 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     });
   }, [filteredQuestions, selectedModel, filterType]);
 
-  // Estado para pregunta actual
   const [current, setCurrent] = useState(0);
 
-  // Reinicia el índice de pregunta cuando cambia el filtro
   useEffect(() => {
     setCurrent(0);
   }, [
@@ -219,7 +201,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
 
   const currentQ = shownQuestions[current];
 
-  // Recoge la respuesta del modelo seleccionado para la pregunta actual
   const modelAnswer = useMemo(() => {
     if (!currentQ) return null;
     const row =
@@ -233,7 +214,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     };
   }, [currentQ, selectedModel]);
 
-  // Función para ir a la siguiente pregunta o tema
   function handleNext() {
     if (current < shownQuestions.length - 1) {
       setCurrent((c) => c + 1);
@@ -246,7 +226,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     }
   }
 
-  // Función para ir a la pregunta anterior o tema anterior si es la primera
   function handlePrev() {
     if (current > 0) {
       setCurrent((c) => c - 1);
@@ -284,7 +263,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
 
   return (
     <div>
-      {/* Fila de volver, paginador, modelo y filtro */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
           Modelo:
@@ -362,7 +340,6 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
         </div>
       </div>
 
-      {/* Fila de selects centrados */}
       <div className="flex justify-center gap-6 mb-8">
         <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
           Bloque:

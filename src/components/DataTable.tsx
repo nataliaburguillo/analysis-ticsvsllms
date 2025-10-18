@@ -27,7 +27,6 @@ interface DataTableProps {
   ) => void;
 }
 
-// Extender ColumnMeta para tooltip (igual que antes)
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
     getTooltip?: () => string;
@@ -42,9 +41,8 @@ const DataTable: React.FC<DataTableProps> = ({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
-  const [showFTYes, setShowFTYes] = useState(true); // checkbox FT (mismo comportamiento que antes)
+  const [showFTYes, setShowFTYes] = useState(true);
 
-  // ===== helpers de normalización (igual estilo que antes) =====
   const normalizeText = (text: string, keepSpaces = false): string => {
     const normalized = text
       .toLowerCase()
@@ -68,7 +66,6 @@ const DataTable: React.FC<DataTableProps> = ({
     return searchWords.every((word) => normalizedRowContent.includes(word));
   };
 
-  // ===== mapeo robusto de headers a los nombres reales del excel =====
   const H = useMemo(() => {
     const stripAccents = (s: string) =>
       s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -109,7 +106,6 @@ const DataTable: React.FC<DataTableProps> = ({
     };
   }, [headers]);
 
-  // ===== filtro FT (igual UX que antes: marcado = todo, desmarcado = solo FT=No) =====
   const filteredData = useMemo(() => {
     if (showFTYes) return data;
     return data.filter((row) => {
@@ -118,7 +114,6 @@ const DataTable: React.FC<DataTableProps> = ({
     });
   }, [data, showFTYes, H.ft]);
 
-  // ===== definición de columnas (solo cambiadas las que son) =====
   const columns = useMemo(() => {
     return [
       {
@@ -215,7 +210,6 @@ const DataTable: React.FC<DataTableProps> = ({
           const val = Number(info.getValue() ?? 0);
           const pct = Number.isFinite(val) ? val : 0;
 
-          // Determinar color según el porcentaje
           let colorClass = "";
           if (pct >= 75) {
             colorClass =
@@ -247,7 +241,6 @@ const DataTable: React.FC<DataTableProps> = ({
           const val = Number(info.getValue() ?? 0);
           const pct = Number.isFinite(val) ? val : 0;
 
-          // Determinar color según el porcentaje
           let colorClass = "";
           if (pct >= 75) {
             colorClass =
@@ -380,7 +373,6 @@ const DataTable: React.FC<DataTableProps> = ({
 
   return (
     <div className="w-full">
-      {/* Filtro global (igual que antes) */}
       <div className="mb-4 flex justify-center">
         <div className="relative max-w-lg w-full">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 !text-gray-800" />
@@ -394,7 +386,6 @@ const DataTable: React.FC<DataTableProps> = ({
         </div>
       </div>
 
-      {/* Tabla */}
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         <div className="w-full overflow-x-auto">
           <table className="w-full table-auto divide-y divide-gray-200 min-w-full">
@@ -445,7 +436,6 @@ const DataTable: React.FC<DataTableProps> = ({
                           )}
                         </div>
 
-                        {/* tooltip flotante (igual que antes) */}
                         {tooltip && (
                           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                             {tooltip}
@@ -485,7 +475,6 @@ const DataTable: React.FC<DataTableProps> = ({
         </div>
       </div>
 
-      {/* Paginación (igual que antes) */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between w-full">
           <p className="text-sm text-gray-700">
