@@ -88,6 +88,63 @@ const COLOR_MAP: Record<string, string> = {
   "": "bg-gray-50 text-gray-400 border-gray-200",
 };
 
+// Paleta de colores para bloques en orden arcoíris SOLO A1-A4 y B1-B4
+const BLOQUE_COLORS: Record<string, string> = {
+  A1: "red",
+  A2: "orange",
+  A3: "yellow",
+  A4: "teal",
+  B1: "cyan",
+  B2: "blue",
+  B3: "indigo",
+  B4: "violet",
+};
+
+// Utilidad para obtener clases de color de Tailwind (segura para Tailwind JIT)
+function getBlockColorClass(bloque: string, shade: number = 700) {
+  const color = BLOQUE_COLORS[bloque] || "gray";
+  // Solo permite colores y tonos válidos de Tailwind
+  const allowedColors = [
+    "blue",
+    "indigo",
+    "emerald",
+    "cyan",
+    "orange",
+    "pink",
+    "teal",
+    "purple",
+    "gray",
+  ];
+  const allowedShades = [700, 500];
+  if (!allowedColors.includes(color) || !allowedShades.includes(shade))
+    return "text-gray-700";
+  return `text-${color}-${shade}`;
+}
+
+// Helper para clases seguras con Tailwind JIT (arcoíris)
+function blockColorClass(bloque: string, shade: number) {
+  switch (BLOQUE_COLORS[bloque]) {
+    case "red":
+      return shade === 700 ? "text-red-700" : "text-red-500";
+    case "orange":
+      return shade === 700 ? "text-orange-700" : "text-orange-500";
+    case "yellow":
+      return shade === 700 ? "text-yellow-700" : "text-yellow-500";
+    case "teal":
+      return shade === 700 ? "text-teal-700" : "text-teal-500";
+    case "cyan":
+      return shade === 700 ? "text-cyan-700" : "text-cyan-500";
+    case "blue":
+      return shade === 700 ? "text-blue-700" : "text-blue-500";
+    case "indigo":
+      return shade === 700 ? "text-indigo-700" : "text-indigo-500";
+    case "violet":
+      return shade === 700 ? "text-violet-700" : "text-violet-500";
+    default:
+      return "text-gray-700";
+  }
+}
+
 export default function CompareModels({ onBack }: CompareModelsProps) {
   const allQuestions = useMemo(() => getAllQuestions(), []);
 
@@ -257,15 +314,31 @@ export default function CompareModels({ onBack }: CompareModelsProps) {
           <div className="bg-white rounded-2xl shadow p-6 border border-slate-100 mb-6">
             <div className="flex flex-wrap gap-6 mb-4">
               <div>
-                <div className="text-xs text-slate-500 font-medium">Tema</div>
-                <div className="text-base font-semibold text-blue-700">
-                  {currentQ.Tema}
+                <div className="text-xs text-slate-500 font-medium">Bloque</div>
+                <div
+                  className={`text-base font-semibold ${blockColorClass(
+                    String(currentQ.Bloque),
+                    700
+                  )}`}
+                >
+                  {currentQ.Bloque}
+                  {BLOQUE_TITULOS[String(currentQ.Bloque)]
+                    ? ` - ${BLOQUE_TITULOS[String(currentQ.Bloque)]}`
+                    : ""}
                 </div>
               </div>
               <div>
-                <div className="text-xs text-slate-500 font-medium">Bloque</div>
-                <div className="text-base font-semibold text-indigo-700">
-                  {currentQ.Bloque}
+                <div className="text-xs text-slate-500 font-medium">Tema</div>
+                <div
+                  className={`text-base font-semibold ${blockColorClass(
+                    String(currentQ.Bloque),
+                    500
+                  )}`}
+                >
+                  {currentQ.Tema}
+                  {TEMA_TITULOS[String(currentQ.Tema)]
+                    ? ` - ${TEMA_TITULOS[String(currentQ.Tema)]}`
+                    : ""}
                 </div>
               </div>
               <div>

@@ -88,12 +88,51 @@ const COLOR_MAP: Record<string, string> = {
   "": "bg-gray-50 text-gray-400 border-gray-200",
 };
 
+// Paleta de colores para bloques en orden arcoíris SOLO A1-A4 y B1-B4 (A4 es teal)
+const BLOQUE_COLORS: Record<string, string> = {
+  A1: "red",
+  A2: "orange",
+  A3: "yellow",
+  A4: "teal",
+  B1: "cyan",
+  B2: "blue",
+  B3: "indigo",
+  B4: "violet",
+};
+
+// Helper seguro para clases Tailwind JIT
+function blockColorClass(bloque: string, shade: number) {
+  const color = BLOQUE_COLORS[bloque];
+  if (!color) return "text-gray-700";
+  if (color === "red") return shade === 700 ? "text-red-700" : "text-red-500";
+  if (color === "orange")
+    return shade === 700 ? "text-orange-700" : "text-orange-500";
+  if (color === "yellow")
+    return shade === 700 ? "text-yellow-700" : "text-yellow-500";
+  if (color === "teal")
+    return shade === 700 ? "text-teal-700" : "text-teal-500";
+  if (color === "cyan")
+    return shade === 700 ? "text-cyan-700" : "text-cyan-500";
+  if (color === "blue")
+    return shade === 700 ? "text-blue-700" : "text-blue-500";
+  if (color === "indigo")
+    return shade === 700 ? "text-indigo-700" : "text-indigo-500";
+  if (color === "violet")
+    return shade === 700 ? "text-violet-700" : "text-violet-500";
+  return "text-gray-700";
+}
+
+type FilterType = "errores" | "aciertos" | "todos";
+
 export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
   const allQuestions = useMemo(() => getAllQuestions(), []);
 
   // Modelo seleccionado
   const [selectedModelKey, setSelectedModelKey] = useState(MODELS[0].key);
   const selectedModel = MODELS.find((m) => m.key === selectedModelKey)!;
+
+  // Nuevo estado para el filtro
+  const [filterType, setFilterType] = useState<FilterType>("errores");
 
   // Extraer bloques únicos
   const bloques = useMemo(
@@ -147,16 +186,22 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
     [allQuestions, selectedBloque, selectedTema]
   );
 
-  // Solo las preguntas que falla el modelo seleccionado
-  const failedQuestions = useMemo(() => {
+  // Filtrado según el tipo de filtro seleccionado
+  const shownQuestions = useMemo(() => {
     return filteredQuestions.filter((q) => {
       const row =
         selectedModel.data.find(
           (r) => String(r["ID"] ?? r["CustomId"] ?? "") === String(q.ID)
         ) || {};
-      return row["Acierto"] === false || row["Acierto"] === "false";
+      if (filterType === "errores") {
+        return row["Acierto"] === false || row["Acierto"] === "false";
+      }
+      if (filterType === "aciertos") {
+        return row["Acierto"] === true || row["Acierto"] === "true";
+      }
+      return true; // "todos"
     });
-  }, [filteredQuestions, selectedModel]);
+  }, [filteredQuestions, selectedModel, filterType]);
 
   // Estado para pregunta actual
   const [current, setCurrent] = useState(0);
@@ -164,9 +209,15 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
   // Reinicia el índice de pregunta cuando cambia el filtro
   useEffect(() => {
     setCurrent(0);
-  }, [selectedTema, selectedBloque, failedQuestions.length, selectedModelKey]);
+  }, [
+    selectedTema,
+    selectedBloque,
+    shownQuestions.length,
+    selectedModelKey,
+    filterType,
+  ]);
 
-  const currentQ = failedQuestions[current];
+  const currentQ = shownQuestions[current];
 
   // Recoge la respuesta del modelo seleccionado para la pregunta actual
   const modelAnswer = useMemo(() => {
@@ -184,10 +235,9 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
 
   // Función para ir a la siguiente pregunta o tema
   function handleNext() {
-    if (current < failedQuestions.length - 1) {
+    if (current < shownQuestions.length - 1) {
       setCurrent((c) => c + 1);
     } else {
-      // Buscar el índice del tema actual en la lista de temas
       const idx = temas.indexOf(selectedTema);
       if (idx !== -1 && idx < temas.length - 1) {
         setSelectedTema(temas[idx + 1]);
@@ -205,10 +255,8 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
       if (idx > 0) {
         const prevTema = temas[idx - 1];
         setSelectedTema(prevTema);
-        // Espera a que failedQuestions se actualice antes de poner el último
         setTimeout(() => {
-          // Calcula el número de preguntas falladas en el nuevo tema
-          const prevFailedQuestions = allQuestions
+          const prevQuestions = allQuestions
             .filter(
               (q) =>
                 String(q.Bloque) === selectedBloque &&
@@ -220,9 +268,15 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
                 selectedModel.data.find(
                   (r) => String(r["ID"] ?? r["CustomId"] ?? "") === String(q.ID)
                 ) || {};
-              return row["Acierto"] === false || row["Acierto"] === "false";
+              if (filterType === "errores") {
+                return row["Acierto"] === false || row["Acierto"] === "false";
+              }
+              if (filterType === "aciertos") {
+                return row["Acierto"] === true || row["Acierto"] === "true";
+              }
+              return true;
             });
-          setCurrent(Math.max(0, prevFailedQuestions.length - 1));
+          setCurrent(Math.max(0, prevQuestions.length - 1));
         }, 0);
       }
     }
@@ -230,14 +284,8 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
 
   return (
     <div>
-      {/* Fila de volver, paginador y modelo */}
+      {/* Fila de volver, paginador, modelo y filtro */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        {/* <button
-          onClick={onBack}
-          className="px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium shadow border border-slate-200"
-        >
-          ← Volver
-        </button> */}
         <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
           Modelo:
           <span className="relative">
@@ -257,6 +305,38 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
             </span>
           </span>
         </label>
+        <div className="flex gap-1 text-xs">
+          <button
+            onClick={() => setFilterType("errores")}
+            className={`px-3 py-1.5 rounded-l-lg border border-slate-300 font-medium ${
+              filterType === "errores"
+                ? "bg-red-100 text-red-700"
+                : "bg-white text-slate-700 hover:bg-slate-100"
+            }`}
+          >
+            Errores
+          </button>
+          <button
+            onClick={() => setFilterType("aciertos")}
+            className={`px-3 py-1.5 border-t border-b border-slate-300 font-medium ${
+              filterType === "aciertos"
+                ? "bg-green-100 text-green-700"
+                : "bg-white text-slate-700 hover:bg-slate-100"
+            }`}
+          >
+            Aciertos
+          </button>
+          <button
+            onClick={() => setFilterType("todos")}
+            className={`px-3 py-1.5 rounded-r-lg border border-slate-300 font-medium ${
+              filterType === "todos"
+                ? "bg-blue-100 text-blue-700"
+                : "bg-white text-slate-700 hover:bg-slate-100"
+            }`}
+          >
+            Todos
+          </button>
+        </div>
         <div className="flex items-center gap-4">
           <button
             onClick={handlePrev}
@@ -266,14 +346,14 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
             Anterior
           </button>
           <span className="text-sm text-slate-600">
-            Pregunta {failedQuestions.length === 0 ? 0 : current + 1} de{" "}
-            {failedQuestions.length}
+            Pregunta {shownQuestions.length === 0 ? 0 : current + 1} de{" "}
+            {shownQuestions.length}
           </span>
           <button
             onClick={handleNext}
             disabled={
               temas.indexOf(selectedTema) === temas.length - 1 &&
-              current === failedQuestions.length - 1
+              current === shownQuestions.length - 1
             }
             className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium border border-slate-200 disabled:opacity-50"
           >
@@ -331,20 +411,30 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
           <div className="bg-white rounded-2xl shadow p-6 border border-slate-100 mb-6">
             <div className="flex flex-wrap gap-6 mb-4">
               <div>
-                <div className="text-xs text-slate-500 font-medium">Tema</div>
-                <div className="text-base font-semibold text-blue-700">
-                  {currentQ.Tema}{" "}
-                  {TEMA_TITULOS[String(currentQ.Tema)]
-                    ? `- ${TEMA_TITULOS[String(currentQ.Tema)]}`
+                <div className="text-xs text-slate-500 font-medium">Bloque</div>
+                <div
+                  className={`text-base font-semibold ${blockColorClass(
+                    String(currentQ.Bloque),
+                    700
+                  )}`}
+                >
+                  {currentQ.Bloque}
+                  {BLOQUE_TITULOS[String(currentQ.Bloque)]
+                    ? ` - ${BLOQUE_TITULOS[String(currentQ.Bloque)]}`
                     : ""}
                 </div>
               </div>
               <div>
-                <div className="text-xs text-slate-500 font-medium">Bloque</div>
-                <div className="text-base font-semibold text-indigo-700">
-                  {currentQ.Bloque}{" "}
-                  {BLOQUE_TITULOS[String(currentQ.Bloque)]
-                    ? `- ${BLOQUE_TITULOS[String(currentQ.Bloque)]}`
+                <div className="text-xs text-slate-500 font-medium">Tema</div>
+                <div
+                  className={`text-base font-semibold ${blockColorClass(
+                    String(currentQ.Bloque),
+                    500
+                  )}`}
+                >
+                  {currentQ.Tema}
+                  {TEMA_TITULOS[String(currentQ.Tema)]
+                    ? ` - ${TEMA_TITULOS[String(currentQ.Tema)]}`
                     : ""}
                 </div>
               </div>
@@ -427,7 +517,7 @@ export default function ExamineErrors({ onBack }: ExamineErrorsProps) {
         </>
       ) : (
         <div className="text-center text-slate-500 py-12">
-          No hay preguntas falladas de este tema por este modelo.
+          No hay preguntas para este filtro por este modelo.
         </div>
       )}
     </div>

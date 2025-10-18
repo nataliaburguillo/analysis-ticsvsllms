@@ -119,7 +119,7 @@ export default function Home() {
                 <div>
                   <h1 className="text-2xl font-semibold text-slate-900">
                     {showErrors
-                      ? "Preguntas falladas por modelo"
+                      ? "Explora las respuestas del modelo"
                       : showCompare
                       ? "Comparar preguntas entre modelos"
                       : showTopics
@@ -130,7 +130,7 @@ export default function Home() {
                   </h1>
                   <p className="text-sm text-slate-500">
                     {showErrors
-                      ? "Explora solo las preguntas que falla cada modelo"
+                      ? "Filtra por errores, aciertos o todas las preguntas de cada modelo"
                       : showCompare
                       ? "Compara las respuestas de los modelos para cada pregunta"
                       : showTopics
@@ -161,10 +161,10 @@ export default function Home() {
                       Comparar preguntas
                     </button>
                     <button
-                      className="px-4 py-2 rounded-lg font-semibold shadow transition-colors bg-red-100 hover:bg-red-200 text-red-700"
+                      className="px-4 py-2 rounded-lg font-semibold shadow transition-colors bg-blue-100 hover:bg-blue-200 text-blue-700"
                       onClick={() => setShowErrors(true)}
                     >
-                      Preguntas falladas
+                      Explora respuestas del modelo
                     </button>
                   </>
                 )}
@@ -172,7 +172,6 @@ export default function Home() {
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
                   <span className="text-blue-700 font-medium">
                     {
-                      // únicos en la primera columna (sin `any`)
                       new Set(
                         data.map(
                           (row) =>
