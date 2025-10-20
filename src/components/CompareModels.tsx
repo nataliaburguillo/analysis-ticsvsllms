@@ -6,6 +6,7 @@ import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
 import o4miniRaw from "../data/respuestas_o4-mini_evaluacion_temario.json";
+import llamaRaw from "../data/respuestas_llama-4-scout-17b-16e-instruct_evaluacion_temario.json";
 import preguntasRaw from "../data/preguntas_evaluacion.json";
 import temarioRaw from "../data/temario.json";
 
@@ -17,6 +18,11 @@ const MODELS = [
     key: "gemma",
     label: "Gemma 2-9b-it",
     data: (gemmaRaw as ModeloJson).data ?? [],
+  },
+  {
+    key: "llama",
+    label: "Llama 4 Scout-17b-16e",
+    data: (llamaRaw as ModeloJson).data ?? [],
   },
   {
     key: "gpt4",

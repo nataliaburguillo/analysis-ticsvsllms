@@ -51,6 +51,16 @@
       "Logprobs": "Sí"
     },
     {
+      "Model": "llama-4-scout-17b-16e-instruct",
+      "FT": "No",
+      "Method": "Direct Prompt",
+      "Questions": 10485,
+      "% Correct answers": 82.03,
+      "% Corrected Score": 76.04,
+      "No doubt": "No",
+      "Logprobs": "No"
+    },
+    {
       "Model": "mistral-saba-24b",
       "FT": "No",
       "Method": "Direct Prompt",
@@ -64,17 +74,17 @@
       "Model": "o4-mini",
       "FT": "No",
       "Method": "Direct Prompt",
-      "Questions": 1645,
-      "% Correct answers": 39.82,
-      "% Corrected Score": 20.47,
+      "Questions": 1700,
+      "% Correct answers": 39.18,
+      "% Corrected Score": 19.96,
       "No doubt": "Sí",
       "Logprobs": "No"
     }
   ],
   "metadata": {
-    "totalRows": 6,
+    "totalRows": 7,
     "totalColumns": 8,
-    "generatedAt": "2025-10-18T14:23:14.029Z",
+    "generatedAt": "2025-10-20T18:16:26.899Z",
     "source": "public/resumen_modelos.xlsx",
     "sheet": "Resumen"
   }

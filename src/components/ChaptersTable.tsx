@@ -19,8 +19,9 @@ import gemmaRaw from "../data/respuestas_gemma2-9b-it_evaluacion_temario.json";
 import gpt4Raw from "../data/respuestas_gpt-4.1-mini_evaluacion_temario.json";
 import mistralRaw from "../data/respuestas_mistral-saba-24b_evaluacion_temario.json";
 import o4miniRaw from "../data/respuestas_o4-mini_evaluacion_temario.json";
+import llamaRaw from "../data/respuestas_llama-4-scout-17b-16e-instruct_evaluacion_temario.json";
 
-type Modelo = "gemma" | "gpt4" | "mistral" | "o4mini";
+type Modelo = "gemma" | "mistral" | "llama" | "gpt4" | "o4mini";
 
 type RowRecord = Record<string, string | number | boolean | null | undefined>;
 type ModeloJson = { headers: string[]; data: RowRecord[] };
@@ -30,6 +31,7 @@ const MODELS: Record<Modelo, RowRecord[]> = {
   gpt4: (gpt4Raw as ModeloJson).data ?? [],
   mistral: (mistralRaw as ModeloJson).data ?? [],
   o4mini: (o4miniRaw as ModeloJson).data ?? [],
+  llama: (llamaRaw as ModeloJson).data ?? [],
 };
 
 // ===== Tipos =====
@@ -427,13 +429,14 @@ const MODEL_LABELS: Record<Modelo, string> = {
   gpt4: "GPT-4.1-mini",
   mistral: "Mistral Saba-24b",
   o4mini: "O4-mini",
+  llama: "Llama 4 Scout-17b-16e",
 };
 
 const ModelSelector: React.FC<{
   currentModel: Modelo;
   onChange: (m: Modelo) => void;
 }> = ({ currentModel, onChange }) => {
-  const models: Modelo[] = ["gemma", "gpt4", "mistral", "o4mini"];
+  const models: Modelo[] = ["gemma", "llama", "gpt4", "mistral", "o4mini"];
   return (
     <div className="flex items-center gap-3 mb-6">
       <span className="font-medium text-slate-700 text-sm">Modelo:</span>

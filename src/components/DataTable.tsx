@@ -422,7 +422,6 @@ const DataTable: React.FC<DataTableProps> = ({
                             )}
                           </span>
 
-                          {/* checkbox FT en la cabecera (igual UX que antes) */}
                           {isFTColumn ? (
                             <input
                               type="checkbox"

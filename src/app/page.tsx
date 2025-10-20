@@ -16,6 +16,7 @@ import gpt_no_option_logprobs from "@/data/respuestas_gpt-4.1-mini_evaluacion_v2
 import mistral from "@/data/respuestas_mistral-saba-24b_evaluacion.json";
 import gemma from "@/data/respuestas_gemma2-9b-it_evaluacion.json";
 import o4 from "@/data/respuestas_o4-mini_evaluacion.json";
+import llama from "@/data/respuestas_llama-4-scout-17b-16e-instruct_evaluacion.json";
 
 type DataRow = Record<string, string | number | boolean | null | undefined>;
 
@@ -34,9 +35,9 @@ export default function Home() {
   const [showTopics, setShowTopics] = useState(false);
   const [showCompare, setShowCompare] = useState(false);
   const [showErrors, setShowErrors] = useState(false);
-  const [selectedModelForTopics] = useState<"gemma" | "gpt4" | "mistral">(
-    "gemma"
-  );
+  const [selectedModelForTopics] = useState<
+    "gemma" | "gpt4" | "mistral" | "llama"
+  >("gpt4");
 
   const modelDataMap: Record<string, ModelData> = {
     "gpt-4.1-mini": gpt as ModelData,
@@ -45,6 +46,7 @@ export default function Home() {
     "mistral-saba-24b": mistral as ModelData,
     "gemma2-9b-it": gemma as ModelData,
     "o4-mini": o4 as ModelData,
+    "llama-4-scout-17b-16e-instruct": llama as ModelData,
   };
 
   const handleModelClick = (
